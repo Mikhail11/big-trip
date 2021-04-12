@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {DESTINATION_DESCRIPTIONS, EVENT_TYPES, EVENT_PLACES, OFFERS} from '../const.js';
+import {DESTINATION_DESCRIPTIONS, EVENT_TYPES, EVENT_PLACES} from '../const.js';
 import {getRandomDataFromArray, generateRandomNumber} from '../utils.js';
 
 let eventId = 0;
@@ -14,7 +14,7 @@ export function generatePoints() {
     date_from: dateFrom,
     date_to: dateTo,
     basePrice: generateRandomNumber(10, 100),
-    offers: OFFERS[generateRandomNumber(0, OFFERS.length-1)].offers,
+    offers: null,
     destination: generateDestination(place),
     isFavorite: generateRandomNumber(),
   };
@@ -45,3 +45,4 @@ function generateDestination(place) {
     pictures: images,
   };
 }
+

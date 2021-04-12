@@ -10,14 +10,11 @@ export function createItemTemplate(points) {
   const dateToTime = dayjs(date_to);
   const dateDay = dayjs(date_from).format('MMM DD');
   const favoriteButtonClass = isFavorite ? 'event__favorite-btn--active' : '';
-  let offersTemplate = '';
-  for (let i = 0; i < offers.length; i++){
-    offersTemplate += `<li class="event__offer">
-                    <span class="event__offer-title">${offers[i].title}</span>
+  const offersTemplate = offers.map(({title, price}) => (`<li class="event__offer">
+                    <span class="event__offer-title">${title}</span>
                     &plus;&euro;&nbsp;
-                    <span class="event__offer-price">${offers[i].price}</span>
-                  </li>`;}
-
+                    <span class="event__offer-price">${price}</span>
+                  </li>`)).join('');
   return `<li class="trip-events__item">
               <div class="event">
                 <time class="event__date" datetime="2019-03-18">${dateDay}</time>

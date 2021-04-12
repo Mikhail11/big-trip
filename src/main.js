@@ -9,12 +9,19 @@ import {createItemTemplate} from './view/item.js';
 import {createItemAddTemplate} from './view/add-item.js';
 import {generatePoints} from './mock/point.js';
 import {generateTripInfo} from './mock/trip-info';
+import {OFFERS} from './const';
 
 const ITEMS_COUNT = 15;
 const points = new Array(ITEMS_COUNT).fill().map(generatePoints);
+points.forEach((item) => {
+  const offersItem = OFFERS.find((offer) => (item.type === offer.type));
+  item.offers = offersItem.offers;
+});
+
 points.sort((a, b) => {
   return a.date_from - b.date_from;
 });
+
 const tripInfoData = generateTripInfo(points);
 
 const siteBodyElement = document.querySelector('.page-body');
