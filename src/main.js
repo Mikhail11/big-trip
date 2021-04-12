@@ -46,9 +46,7 @@ const itemsList = tripMainPageEvents.querySelector('.trip-events__list');
 
 render(itemsList, createItemEditTemplate(points[0]), 'beforeend');
 
-for (let i = 0; i < points.length; i++){
-  render(itemsList, createItemTemplate(points[i]),'beforeend');
-}
+points.forEach((item) => render(itemsList, createItemTemplate(item),'beforeend'));
 
 render(itemsList, createItemAddTemplate(), 'beforeend');
 
