@@ -89,4 +89,3 @@ function renderItems(itemListElement, item) {
 
 }
 
-export {points};
