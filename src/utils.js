@@ -1,4 +1,31 @@
 
+export const RenderPosition = {
+  AFTERBEGIN: 'afterbegin',
+  BEFOREEND: 'beforeend',
+};
+
+export function render(container, element, place) {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+}
+
+export function renderTemplate(container, template, place) {
+  container.insertAdjacentHTML(place, template);
+}
+
+export function createNewElement(template) {
+  const newElement = document.createElement('div');
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+}
+
 function getRandomDataFromArray(array) {
   return array[generateRandomNumber(0, array.length-1)];
 }

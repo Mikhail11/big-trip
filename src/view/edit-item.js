@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import {EVENT_PLACES} from '../const.js';
+import {createNewElement} from '../utils.js';
 
-export function createItemEditTemplate(point) {
+function createItemEditTemplate(point) {
   const {type, date_from, date_to, basePrice, offers, destination} = point;
 
   const dateFromTime = dayjs(date_from).format('DD/MM/YY HH:mm');
@@ -116,44 +117,63 @@ export function createItemEditTemplate(point) {
                 </section>
               </form>
             </li>`;
+}
 
-  function generateOffersForEditItem(offers) {
-    let offersTemplate = `<section class="event__section  event__section--offers">
-      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+function generateOffersForEditItem(offers) {
+  let offersTemplate = `<section class="event__section  event__section--offers">
+    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
-      <div class="event__available-offers">`;
-    if (offers.length !== 0) {
-      for (let i = 0; i < offers.length; i++) {
-        offersTemplate += `<div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${i}}" type="checkbox" name="event-offer-${i}" checked>
-                        <label class="event__offer-label" for="event-offer-luggage-1">
-                          <span class="event__offer-title">${offers[i].title}</span>
-                          &plus;&euro;&nbsp;
-                          <span class="event__offer-price">${offers[i].price}</span>
-                        </label>
-                      </div>`;
-      }
-      return offersTemplate + '</div></section>';
+    <div class="event__available-offers">`;
+  if (offers.length !== 0) {
+    for (let i = 0; i < offers.length; i++) {
+      offersTemplate += `<div class="event__offer-selector">
+                      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${i}}" type="checkbox" name="event-offer-${i}" checked>
+                      <label class="event__offer-label" for="event-offer-luggage-1">
+                        <span class="event__offer-title">${offers[i].title}</span>
+                        &plus;&euro;&nbsp;
+                        <span class="event__offer-price">${offers[i].price}</span>
+                      </label>
+                    </div>`;
     }
-    return '';
+    return offersTemplate + '</div></section>';
   }
-  function generatePhotosTemplate(obj) {
-    if (obj.length !== 0){
-      let photoListDiv = `<div class="event__photos-container">
-        <div class="event__photos-tape">`;
-      for(let i = 0; i < obj.length; i++){
-        photoListDiv += `<img class="event__photo" src="${obj[i].src}" alt="${obj[i].description}">`;
-      }
-      return photoListDiv + '</div></div>';
-    }
-    return '';
+  return '';
+}
+
+function generatePhotosTemplate(obj) {
+  if (obj.length !== 0){
+    let photoListDiv = `<div class="event__photos-container">
+      <div class="event__photos-tape">`;
+    obj.forEach((item) => photoListDiv += `<img class="event__photo" src="${item.src}" alt="${item.description}">`);
+    return photoListDiv + '</div></div>';
+  }
+  return '';
+}
+
+function generatePlacesListTemplate(arr) {
+  let placesList = '<datalist id="destination-list-1">';
+  arr.forEach((item) => placesList += `<option value="${item}"></option>\n`);
+  return placesList + '</datalist>';
+}
+
+export default class EditItem {
+  constructor(data) {
+    this._element = null;
+    this._data = data;
   }
 
-  function generatePlacesListTemplate(arr) {
-    let placesList = '<datalist id="destination-list-1">';
-    for (let i = 0; i < arr.length; i++){
-      placesList += `<option value="${arr[i]}"></option>\n`;
+  getTemplate(){
+    return createItemEditTemplate(this._data);
+  }
+
+  getElement(){
+    if(!this._element){
+      this._element = createNewElement(this.getTemplate());
     }
-    return placesList + '</datalist>';
+    return this._element;
+  }
+
+  removeElement(){
+    this._element = null;
   }
 }
