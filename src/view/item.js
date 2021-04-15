@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import {formatTimePeriod} from '../utils.js';
+import {createNewElement} from '../utils';
 
-
-export function createItemTemplate(points) {
+function createItemTemplate(points) {
 
   const {type, date_from, date_to, basePrice, offers, isFavorite} = points;
 
@@ -48,4 +48,26 @@ export function createItemTemplate(points) {
                 </button>
               </div>
             </li>`;
+}
+
+export default class Item {
+  constructor(data) {
+    this._element = null;
+    this._data = data;
+  }
+
+  getTemplate(){
+    return createItemTemplate(this._data);
+  }
+
+  getElement(){
+    if(!this._element){
+      this._element = createNewElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement(){
+    this._element = null;
+  }
 }

@@ -1,16 +1,17 @@
 import {createNewElement} from '../utils.js';
-function createItemsListTemplate() {
+
+function createItemListEmptyTemplate() {
   // eslint-disable-next-line quotes
-  return `<ul class="trip-events__list"></ul>`;
+  return `<p class="trip-events__msg">Click New Event to create your first point</p>`;
 }
 
-export default class ItemsList {
+export default class ItemListEmpty {
   constructor() {
     this._element = null;
   }
 
   getTemplate(){
-    return createItemsListTemplate();
+    return createItemListEmptyTemplate();
   }
 
   getElement(){
