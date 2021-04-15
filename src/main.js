@@ -30,17 +30,11 @@ const tripMainInfo = siteHeaderElement.querySelector('.trip-main');
 const tripMainNavigation = tripMainInfo.querySelector('.trip-controls__navigation');
 const tripMainFilters = tripMainInfo.querySelector('.trip-controls__filters');
 const tripMainPageEvents = siteBodyElement.querySelector('.trip-events');
-//const tripInfoData = generateTripInfo(points);
 
-//render(tripMainInfo, new TripInfoView(tripInfoData).getElement(), RenderPosition.AFTERBEGIN);
 render(tripMainNavigation, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
 
-//const tripInfo = tripMainInfo.querySelector('.trip-info');
-
-//render(tripInfo, new TripPriceView(points).getElement(), RenderPosition.BEFOREEND);
-render(tripMainFilters, new MainFilterView().getElement(), RenderPosition.BEFOREEND);
-render(tripMainPageEvents, new SortElementView().getElement(), RenderPosition.BEFOREEND);
 render(tripMainPageEvents, new ItemsListView().getElement(), RenderPosition.BEFOREEND);
+render(tripMainFilters, new MainFilterView().getElement(), RenderPosition.BEFOREEND);
 
 const itemsList = tripMainPageEvents.querySelector('.trip-events__list');
 
@@ -51,6 +45,8 @@ if (points.length !== 0){
   const tripInfo = tripMainInfo.querySelector('.trip-info');
 
   render(tripInfo, new TripPriceView(points).getElement(), RenderPosition.BEFOREEND);
+  render(tripMainPageEvents, new SortElementView().getElement(), RenderPosition.BEFOREEND);
+
   points.forEach((item) => renderItems(itemsList, item));
 }
 else {
