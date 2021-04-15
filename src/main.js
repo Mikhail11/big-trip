@@ -6,13 +6,13 @@ import SortElementView from './view/sort.js';
 import ItemsListView from './view/items-list.js';
 import EditItemView from './view/edit-item.js';
 import ItemView from './view/item.js';
-import {createItemAddTemplate} from './view/add-item.js';
+import ItemListEmptyView from './view/item-list-empty';
 import {generatePoints} from './mock/point.js';
 import {generateTripInfo} from './mock/trip-info.js';
 import {OFFERS} from './const.js';
-import {renderTemplate, RenderPosition, render} from './utils.js';
+import {RenderPosition, render} from './utils.js';
 
-const ITEMS_COUNT = 15;
+const ITEMS_COUNT = 0;
 const points = new Array(ITEMS_COUNT).fill().map(generatePoints);
 points.forEach((item) => {
   const offersItem = OFFERS.find((offer) => (item.type === offer.type));
@@ -30,23 +30,33 @@ const tripMainInfo = siteHeaderElement.querySelector('.trip-main');
 const tripMainNavigation = tripMainInfo.querySelector('.trip-controls__navigation');
 const tripMainFilters = tripMainInfo.querySelector('.trip-controls__filters');
 const tripMainPageEvents = siteBodyElement.querySelector('.trip-events');
-const tripInfoData = generateTripInfo(points);
+//const tripInfoData = generateTripInfo(points);
 
-render(tripMainInfo, new TripInfoView(tripInfoData).getElement(), RenderPosition.AFTERBEGIN);
+//render(tripMainInfo, new TripInfoView(tripInfoData).getElement(), RenderPosition.AFTERBEGIN);
 render(tripMainNavigation, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
 
-const tripInfo = tripMainInfo.querySelector('.trip-info');
+//const tripInfo = tripMainInfo.querySelector('.trip-info');
 
-render(tripInfo, new TripPriceView(points).getElement(), RenderPosition.BEFOREEND);
+//render(tripInfo, new TripPriceView(points).getElement(), RenderPosition.BEFOREEND);
 render(tripMainFilters, new MainFilterView().getElement(), RenderPosition.BEFOREEND);
 render(tripMainPageEvents, new SortElementView().getElement(), RenderPosition.BEFOREEND);
 render(tripMainPageEvents, new ItemsListView().getElement(), RenderPosition.BEFOREEND);
 
 const itemsList = tripMainPageEvents.querySelector('.trip-events__list');
 
-points.forEach((item) => renderItems(itemsList, item));
+if (points.length !== 0){
+  const tripInfoData = generateTripInfo(points);
+  render(tripMainInfo, new TripInfoView(tripInfoData).getElement(), RenderPosition.AFTERBEGIN);
 
-renderTemplate(itemsList, createItemAddTemplate(), 'beforeend');
+  const tripInfo = tripMainInfo.querySelector('.trip-info');
+
+  render(tripInfo, new TripPriceView(points).getElement(), RenderPosition.BEFOREEND);
+  points.forEach((item) => renderItems(itemsList, item));
+}
+else {
+  render(itemsList, new ItemListEmptyView().getElement(), RenderPosition.BEFOREEND);
+}
+
 
 function renderItems(itemListElement, item) {
   const itemComponent = new ItemView(item);
