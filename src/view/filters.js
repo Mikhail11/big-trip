@@ -1,4 +1,4 @@
-import {createNewElement} from '../utils.js';
+import Abstract from './abstract.js';
 
 function createMainFilterTemplate() {
   return `<form class="trip-filters" action="#" method="get">
@@ -21,23 +21,9 @@ function createMainFilterTemplate() {
               </form>`;
 }
 
-export default class MainFilter {
-  constructor() {
-    this._element = null;
-  }
+export default class MainFilter extends Abstract{
 
   getTemplate(){
     return createMainFilterTemplate();
-  }
-
-  getElement(){
-    if(!this._element){
-      this._element = createNewElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement(){
-    this._element = null;
   }
 }

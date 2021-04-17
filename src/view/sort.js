@@ -1,4 +1,4 @@
-import {createNewElement} from '../utils.js';
+import Abstract from './abstract.js';
 
 function createSortElementTemplate() {
   return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
@@ -29,23 +29,10 @@ function createSortElementTemplate() {
           </form>`;
 }
 
-export default class SortElement {
-  constructor() {
-    this._element = null;
-  }
+export default class SortElement extends Abstract{
 
   getTemplate(){
     return createSortElementTemplate();
   }
 
-  getElement(){
-    if(!this._element){
-      this._element = createNewElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement(){
-    this._element = null;
-  }
 }

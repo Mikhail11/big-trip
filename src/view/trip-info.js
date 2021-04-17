@@ -1,4 +1,4 @@
-import {createNewElement} from '../utils.js';
+import Abstract from './abstract.js';
 
 function createTripInfoTemplate(tripInfo) {
   const {tripLabel, tripDates} = tripInfo;
@@ -11,9 +11,9 @@ function createTripInfoTemplate(tripInfo) {
           </section>`;
 }
 
-export default class TripInfo{
+export default class TripInfo extends Abstract{
   constructor(data) {
-    this._element = null;
+    super();
     this._data = data;
   }
 
@@ -21,14 +21,4 @@ export default class TripInfo{
     return createTripInfoTemplate(this._data);
   }
 
-  getElement(){
-    if(!this._element){
-      this._element = createNewElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement(){
-    this._element = null;
-  }
 }
