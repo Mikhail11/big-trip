@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {DESTINATION_DESCRIPTIONS, EVENT_TYPES, EVENT_PLACES} from '../const.js';
-import {getRandomDataFromArray, generateRandomNumber} from '../utils.js';
+import {getRandomDataFromArray, generateRandomNumber} from '../utils/common.js';
 
 let eventId = 0;
 

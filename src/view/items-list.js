@@ -1,26 +1,13 @@
-import {createNewElement} from '../utils.js';
+import Abstract from './abstract.js';
+
 function createItemsListTemplate() {
-  // eslint-disable-next-line quotes
-  return `<ul class="trip-events__list"></ul>`;
+  return '<ul class="trip-events__list"></ul>';
 }
 
-export default class ItemsList {
-  constructor() {
-    this._element = null;
-  }
+export default class ItemsList extends Abstract{
 
   getTemplate(){
     return createItemsListTemplate();
   }
 
-  getElement(){
-    if(!this._element){
-      this._element = createNewElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement(){
-    this._element = null;
-  }
 }

@@ -1,4 +1,4 @@
-import {createNewElement} from '../utils.js';
+import Abstract from './abstract.js';
 
 function createTripPriceTemplate(points) {
   let totalSum = 0;
@@ -12,9 +12,9 @@ function createTripPriceTemplate(points) {
           </p>`;
 }
 
-export default class TripPrice {
+export default class TripPrice extends Abstract{
   constructor(points) {
-    this._element = null;
+    super();
     this._points = points;
   }
 
@@ -22,14 +22,4 @@ export default class TripPrice {
     return createTripPriceTemplate(this._points);
   }
 
-  getElement(){
-    if(!this._element){
-      this._element = createNewElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement(){
-    this._element = null;
-  }
 }

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import {formatTimePeriod} from '../utils.js';
-import {createNewElement} from '../utils';
+import {formatTimePeriod} from '../utils/point.js';
+import Abstract from './abstract.js';
 
 function createItemTemplate(points) {
 
@@ -50,24 +50,26 @@ function createItemTemplate(points) {
             </li>`;
 }
 
-export default class Item {
+export default class Item extends Abstract{
   constructor(data) {
-    this._element = null;
+    super();
     this._data = data;
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   getTemplate(){
     return createItemTemplate(this._data);
   }
 
-  getElement(){
-    if(!this._element){
-      this._element = createNewElement(this.getTemplate());
-    }
-    return this._element;
+  _clickHandler(evt){
+    evt.preventDefault();
+    this._callback.click();
   }
 
-  removeElement(){
-    this._element = null;
+  setClickHandler(callback){
+    this._callback.click = callback;
+
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._clickHandler);
   }
+
 }

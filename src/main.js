@@ -10,9 +10,9 @@ import ItemListEmptyView from './view/item-list-empty';
 import {generatePoints} from './mock/point.js';
 import {generateTripInfo} from './mock/trip-info.js';
 import {OFFERS} from './const.js';
-import {RenderPosition, render} from './utils.js';
+import {RenderPosition, render, replace} from './utils/render.js';
 
-const ITEMS_COUNT = 0;
+const ITEMS_COUNT = 10;
 const points = new Array(ITEMS_COUNT).fill().map(generatePoints);
 points.forEach((item) => {
   const offersItem = OFFERS.find((offer) => (item.type === offer.type));
@@ -31,26 +31,26 @@ const tripMainNavigation = tripMainInfo.querySelector('.trip-controls__navigatio
 const tripMainFilters = tripMainInfo.querySelector('.trip-controls__filters');
 const tripMainPageEvents = siteBodyElement.querySelector('.trip-events');
 
-render(tripMainNavigation, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
+render(tripMainNavigation, new SiteMenuView(), RenderPosition.BEFOREEND);
 
-render(tripMainPageEvents, new ItemsListView().getElement(), RenderPosition.BEFOREEND);
-render(tripMainFilters, new MainFilterView().getElement(), RenderPosition.BEFOREEND);
+render(tripMainPageEvents, new ItemsListView(), RenderPosition.BEFOREEND);
+render(tripMainFilters, new MainFilterView(), RenderPosition.BEFOREEND);
 
 const itemsList = tripMainPageEvents.querySelector('.trip-events__list');
 
 if (points.length !== 0){
   const tripInfoData = generateTripInfo(points);
-  render(tripMainInfo, new TripInfoView(tripInfoData).getElement(), RenderPosition.AFTERBEGIN);
+  render(tripMainInfo, new TripInfoView(tripInfoData), RenderPosition.AFTERBEGIN);
 
   const tripInfo = tripMainInfo.querySelector('.trip-info');
 
-  render(tripInfo, new TripPriceView(points).getElement(), RenderPosition.BEFOREEND);
-  render(tripMainPageEvents, new SortElementView().getElement(), RenderPosition.BEFOREEND);
+  render(tripInfo, new TripPriceView(points), RenderPosition.BEFOREEND);
+  render(tripMainPageEvents, new SortElementView(), RenderPosition.BEFOREEND);
 
   points.forEach((item) => renderItems(itemsList, item));
 }
 else {
-  render(itemsList, new ItemListEmptyView().getElement(), RenderPosition.BEFOREEND);
+  render(itemsList, new ItemListEmptyView(), RenderPosition.BEFOREEND);
 }
 
 
@@ -58,31 +58,30 @@ function renderItems(itemListElement, item) {
   const itemComponent = new ItemView(item);
   const itemEditComponent = new EditItemView(item);
 
-  itemComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  itemComponent.setClickHandler(() => {
     replaceItemToEditForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  itemEditComponent.getElement().querySelector('.event--edit').addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  itemEditComponent.setFormSubmitHandler(() => {
     replaceEditFormToItem();
     document.removeEventListener('keydown',onEscKeyDown);
   });
 
-  itemEditComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  itemEditComponent.setClickHandler(() => {
     replaceEditFormToItem();
     document.removeEventListener('keydown',onEscKeyDown);
   });
 
-  render(itemListElement, itemComponent.getElement(), RenderPosition.BEFOREEND);
+  render(itemListElement, itemComponent, RenderPosition.BEFOREEND);
 
 
   function replaceItemToEditForm(){
-    itemListElement.replaceChild(itemEditComponent.getElement(), itemComponent.getElement());
+    replace(itemEditComponent, itemComponent);
   }
 
   function replaceEditFormToItem(){
-    itemListElement.replaceChild(itemComponent.getElement(), itemEditComponent.getElement());
+    replace(itemComponent, itemEditComponent);
   }
 
   function onEscKeyDown(evt) {

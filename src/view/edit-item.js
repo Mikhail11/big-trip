@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {EVENT_PLACES} from '../const.js';
-import {createNewElement} from '../utils.js';
+import Abstract from './abstract.js';
 
 function createItemEditTemplate(point) {
   const {type, date_from, date_to, basePrice, offers, destination} = point;
@@ -156,24 +156,38 @@ function generatePlacesListTemplate(arr) {
   return placesList + '</datalist>';
 }
 
-export default class EditItem {
+export default class EditItem extends Abstract{
   constructor(data) {
-    this._element = null;
+    super();
     this._data = data;
+
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   getTemplate(){
     return createItemEditTemplate(this._data);
   }
 
-  getElement(){
-    if(!this._element){
-      this._element = createNewElement(this.getTemplate());
-    }
-    return this._element;
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
 
-  removeElement(){
-    this._element = null;
+  _clickHandler(evt){
+    evt.preventDefault();
+    this._callback.click();
+  }
+
+  setClickHandler(callback){
+    this._callback.click = callback;
+
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._clickHandler);
+  }
+
+  setFormSubmitHandler(callback){
+    this._callback.formSubmit = callback;
+
+    this.getElement().querySelector('.event--edit').addEventListener('submit', this._formSubmitHandler);
   }
 }
